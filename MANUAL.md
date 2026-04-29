@@ -1,6 +1,6 @@
 # Gate User Manual
 
-Last updated: 2026-04-29 (revision 2)
+Last updated: 2026-04-29 (revision 3)
 
 This is the operator's guide for Gate. It assumes you have a Gate license, the binary installed, and Rashomon configured. If you do not, read `README.md` first, then come back.
 
@@ -84,7 +84,7 @@ A good first-day default for most users: Anthropic Sonnet 4.6 across all four de
 
 Rashomon is the local LLM gateway. Every model request from Gate goes through it. It runs as a Python sidecar on `localhost:14881` and handles provider routing, cost tracking, and request-shape normalization.
 
-Rashomon is started by Gate at boot. You do not invoke it manually for normal use. You configure it through Gate's Settings panel, not by editing files. API keys go through Gate's Settings UI; they end up encrypted in the local Electron keystore, not in plain text on disk.
+Rashomon is started by Gate at boot. You do not invoke it manually for normal use. You configure it through Gate's Settings panel, not by editing files. API keys go through Gate's Settings UI; they end up encrypted in Gate's local keystore, not in plain text on disk.
 
 To verify Rashomon is up and reachable:
 
@@ -580,7 +580,7 @@ If cost is your primary constraint, lean toward Surgeon and Sprinter. If quality
 ### Anthropic
 
 - **Models supported.** `claude-opus-4-6`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001` (per the registry at `electron/main.js:13986-13988`).
-- **Key management.** Settings > Providers > Anthropic > API Key. Stored encrypted in the local Electron keystore.
+- **Key management.** Settings > Providers > Anthropic > API Key. Stored encrypted in Gate's local keystore.
 - **Rate limits.** Whatever your Anthropic account allows. Check `console.anthropic.com`. Heavy Engineer dispatches at Opus level can push against per-minute caps; if you hit one, Gate surfaces the provider error and the ticket fails with `failure_mode: error`.
 - **Fallback behavior.** None automatic. If Anthropic fails, the ticket fails. Configure a different provider on a different desk if you want resilience.
 
@@ -771,7 +771,7 @@ To check local buffering: `sqlite3 ~/.gate/grimoire.db "SELECT COUNT(*) FROM tel
 
 ```
 ~/.gate/logs/
-  main.log         Electron main process stderr/stdout
+  main.log         Tauri main process stderr/stdout
   renderer.log     UI process logs
   rashomon.log     Rashomon LLM gateway logs
   crash/           Crash reports if any
@@ -1004,7 +1004,7 @@ Pulse (the daily snapshot) is gated on the same consent function and similarly s
   projects/                One directory per registered project
     <project-name>/        Project-specific state (config, snapshots, etc.)
   logs/                    Process logs
-    main.log               Electron main process stderr/stdout
+    main.log               Tauri main process stderr/stdout
     renderer.log           UI process logs
     rashomon.log           Rashomon LLM gateway logs
     crash/                 Crash reports directory (created on demand)
@@ -1038,7 +1038,7 @@ From `electron/memory.js:40-200`:
 ### Logs and crash reports
 
 - Process stdout/stderr lands in `~/.gate/logs/main.log` (or system journal on `journalctl --user-unit gate.service` if installed as a systemd unit; not the default at v1.0).
-- Crash collection is disabled in v1.0 builds. Crashes log to `~/.gate/logs/main.log` locally but are not uploaded to SolidDark. Server-side crash collection is planned for v1.1, opt-in only. Verified by the absence of crashpad, sentry, or upload-URL configuration in `src-tauri/tauri.conf.json` and `package.json`.
+- Crash collection is disabled in v1.0 builds. Crashes log to `~/.gate/logs/main.log` locally but are not uploaded to SolidDark. Server-side crash collection is planned for v1.1, opt-in only. Verified by the absence of `sentry-tauri`, `panic_hook`, `tauri-plugin-log`, or any upload-URL configuration in `src-tauri/tauri.conf.json` and `src-tauri/Cargo.toml`. The shipped Tauri dependencies are limited to `tauri`, `tauri-plugin-dialog`, `tauri-plugin-process`, and `tauri-plugin-updater`.
 - Telemetry batch failures (server-side) are visible on the SolidDark admin dashboard's Telemetry batch failures panel, not on the local install.
 
 ### Temp files
