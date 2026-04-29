@@ -1,6 +1,6 @@
 # Gate FAQ
 
-Last updated: 2026-04-29
+Last updated: 2026-04-29 (revision 2)
 
 This is the canonical FAQ for Gate. The version-controlled file lives in this public repository so changes are transparent and dated.
 
@@ -78,7 +78,7 @@ Yes. One click in the Lemon Squeezy customer portal. No email required, no reten
 
 ### Do you offer refunds?
 
-[NEEDS AKRIJ INPUT, current default is Lemon Squeezy's standard policy unless you've set an override]
+Lemon Squeezy's default policy applies. Email akrij@soliddark.net within 7 days of the most recent charge for a refund, no questions asked.
 
 ### What payment methods are accepted?
 
@@ -86,7 +86,7 @@ Whatever Lemon Squeezy accepts on the soliddark store: credit and debit cards gl
 
 ### Are there team or enterprise plans?
 
-Not at v1.0. Pricing is per machine, per month. Teams currently buy multiple individual licenses. [NEEDS AKRIJ INPUT for the team plan timeline once it exists]
+Not at v1.0. Single-seat licenses only today. Team plans are planned but not scoped. If you need multi-seat licensing now, email akrij@soliddark.net and we'll work something out.
 
 ### Will the price ever increase?
 
@@ -94,7 +94,7 @@ The plan is to move to $79 per month for individual users and $159 per month for
 
 ### Do you offer discounts for students or open-source maintainers?
 
-[NEEDS AKRIJ INPUT, no discount program is wired up today]
+Not at v1.0. Open to it post-launch once base pricing stabilizes. Email akrij@soliddark.net if you're a student or maintain a meaningful open-source project and want to discuss.
 
 ---
 
@@ -142,7 +142,7 @@ Yes. The ticket-completion signal is built in `electron/main.js` at the ticket-c
 
 ### Are you GDPR compliant?
 
-[NEEDS AKRIJ INPUT, the practical posture matches GDPR principles (data minimization, no PII collection, opt-out for paid users, deletion on request) but no formal GDPR certification has been pursued]
+Not formally certified. The practice is aligned: data minimization, no PII collected, all telemetry opt-out for paid users, raw user data stays on the user's machine, deletion on request via email. We have not undergone a formal third-party GDPR audit. If your procurement team requires formal certification, Gate is not the right tool yet.
 
 ### Are you SOC 2 certified?
 
@@ -166,11 +166,11 @@ After Mac. No firm date. The codebase already runs on Windows in development; th
 
 ### What are the system requirements?
 
-[NEEDS AKRIJ INPUT for definitive minimums]. Practical floor based on what the dev box uses: 8 GB RAM, 4 GB free disk, modern x86_64 CPU. The bottleneck under heavy load is API latency to your model provider, not local compute.
+Linux x86_64. Tested on Ubuntu 22.04 and 24.04. CPU: any modern x86_64 (Gate is not CPU-bound for cloud providers). RAM: 4 GB minimum for the Electron app, more if you're running local models. Disk: see install size below, plus 50 to 200 MB for grimoire.db growth over months of use. GPU: irrelevant for cloud providers (Anthropic, OpenAI). For local models via Ollama or llama.cpp, your VRAM requirements depend entirely on which model you load. A 7B model fits on 8 GB VRAM; a 70B model needs 48 GB+ or quantization.
 
 ### How big is the install?
 
-The AppImage is approximately [NEEDS AKRIJ INPUT for exact size]. After install and skill extraction, expect another few hundred MB in `~/.gate/`.
+The v1.0.0 AppImage is approximately 201 MB (201,009,656 bytes exactly), measured from the GitHub release asset. The `.deb` is approximately 139 MB (139,261,626 bytes). After install and skill extraction, expect another few hundred MB in `~/.gate/` over months of use.
 
 ### What does the install actually do to my system?
 
@@ -252,7 +252,7 @@ Yes. The Engineer desk can execute commands inside your project root: build comm
 
 ### Can Gate access files outside its working directory?
 
-By default, Gate operates within the working directory you select at onboarding or per-ticket. File reads and writes outside that directory are not part of the standard dispatch path. [NEEDS AKRIJ INPUT for whether path-escape protection is enforced at the IPC layer or trusted to the model]
+Yes, by design. Gate's robots execute developer tickets which often require touching files across a project tree. The robot only acts on the project directory you've explicitly added to Gate. There is no IPC-layer path-escape enforcement today; security relies on the project boundary you set in Gate's UI. Run Gate in a container or VM if you need stricter isolation.
 
 ### Can Gate access the internet?
 
@@ -268,19 +268,30 @@ Six: Echo, Gokeu, Hex, Mako, Trig, Volt. Each is persistent across sessions, has
 
 ### Can I add or remove robots?
 
-[NEEDS AKRIJ INPUT, the v1.0 default is six fixed robots; whether the UI exposes add/remove or that requires editing local state]
+Six robots ship with Gate (Echo, Gokeu, Hex, Mako, Trig, Volt). Maximum 6 robots active at once. Add and remove via Settings > Robots. Removed robots enter cryo (file move from `~/.gate/robots/<id>.json` to `~/.gate/cryo/<id>.json`); skill data is preserved indefinitely. To restore, move the cryo file back. To permanently destroy, delete the cryo file and the robot's spell card rows in `~/.gate/grimoire.db` table `spell_cards`.
 
 ### What are the 8 robot classes?
 
-There are seven robot classes today, not eight: `natural`, `librarian`, `surgeon`, `paranoid`, `sprinter`, `investigator`, `contractor`. Each class governs the robot's tone in post-ticket dialogue and the prompt-template flavor used at dispatch. The class set is in `electron/main.js` at the `CLASS_DIALOGUE_PROMPTS` map. [NEEDS AKRIJ INPUT if an eighth class is planned but not yet shipped]
+Eight classes are shipped in v1.0, defined in `electron/class_definitions.js`. Each class governs dialogue tone, skill extraction shape, and skill-tree topology:
+
+- **natural**: balanced generalist, standard extraction, neutral and professional tone, no special behavior.
+- **librarian**: knowledge archivist, aggressive extraction across six categories, methodical tone that frequently cites past work, surfaces relevant prior tickets unprompted at higher skill counts.
+- **surgeon**: precision executor, narrow deep extraction, terse and clinical tone with zero wasted words, can skip strategist and revision passes at higher skill counts.
+- **paranoid**: security sentinel, defensive extraction, suspicious and cautious tone, runs Shinobi pre-scan before Engineer work automatically once unlocked.
+- **sprinter**: speed optimizer, minimal extraction (only HIGH confidence skills, broad shallow arsenal), clipped tone that never explains.
+- **investigator**: root cause analyst, hypothesis-chain extraction, inquisitive tone that thinks out loud, builds evidence chains across tickets.
+- **contractor**: scope enforcer, bounded extraction strictly within ticket boundaries, formal scope-conscious tone, confirms before expanding.
+- **architect**: structure-first, structural extraction with a lattice skill tree, deliberate tone that names coupling risks before touching anything, prefers explicit boundaries over convenience.
+
+Class governs robot behavior holistically; tone, extraction shape, and unlock paths all change per class.
 
 ### Can I customize a robot's personality?
 
-Robot class is set at robot creation and governs tone. Robot names are fixed in v1.0 (Echo, Gokeu, Hex, Mako, Trig, Volt). [NEEDS AKRIJ INPUT for whether per-robot prompt overrides are exposed in Settings]
+Not at v1.0. Each robot's class determines its personality, dialogue tone, and skill extraction shape. Per-robot prompt overrides are planned but not scoped. To experiment with personality, change the robot's class in Settings > Robots > [robot] > Class.
 
 ### What happens if I delete a robot?
 
-[NEEDS AKRIJ INPUT, deletion semantics are not in the current Settings surface]
+Soft delete by default. The robot's JSON file moves from `~/.gate/robots/<id>.json` to `~/.gate/cryo/<id>.json`. The robot's spell cards in `grimoire.db` are flagged (`status=2`) but never destroyed. To restore, move the cryo file back. To permanently destroy, delete the cryo file and the robot's spell card rows in `~/.gate/grimoire.db` table `spell_cards`.
 
 ### What is robot hibernation?
 
@@ -396,15 +407,7 @@ Email akrij@soliddark.net. GitHub issues on this repo are also read directly.
 
 ### What's on the roadmap?
 
-The next confirmed milestones, in order:
-
-1. Mac build (May 2026, after Apple Developer enrollment).
-2. Windows build (after Mac).
-3. Telemetry batch IP capture and ingest pipeline hardening.
-4. Per-event provider/model attribution in the dashboard.
-5. Activation and conversion-funnel improvements based on real-user data.
-
-[NEEDS AKRIJ INPUT for any planned features beyond infrastructure]
+Stated short-term: macOS build (May 2026), Windows build (after Mac). Stated medium-term: per-robot prompt customization, team licensing, expanded skill extraction sources beyond ticket completion. No firm dates beyond what's in this list. The repo's recent commits and open issues are the most current source of what's actively being worked on.
 
 ### When is the next release?
 
@@ -440,11 +443,11 @@ In order of preference:
 
 ### Is there a Discord or community?
 
-[NEEDS AKRIJ INPUT, no Discord is wired up at v1.0; the public surfaces today are this repo and the SolidDark X account]
+Not yet. The public surfaces today are this repo (github.com/AkrijSama/gate-public) and the SolidDark X account (@SolidDarkX). A Discord may launch post-Mac-build if there's user demand.
 
 ### How fast do you respond to support requests?
 
-[NEEDS AKRIJ INPUT for committed SLA]. Today, paid-license issues typically receive a same-day response from Akrij directly. There is no formal SLA at v1.0.
+Best-effort, solo founder. Typical response within 24 hours. No formal SLA at v1.0. Email akrij@soliddark.net or open an issue at github.com/AkrijSama/gate-public/issues. Bugs that block paying customers are prioritized.
 
 ### What hours is support available?
 
