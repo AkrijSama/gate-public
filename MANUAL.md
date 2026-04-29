@@ -1,6 +1,6 @@
 # Gate User Manual
 
-Last updated: 2026-04-29
+Last updated: 2026-04-29 (revision 2)
 
 This is the operator's guide for Gate. It assumes you have a Gate license, the binary installed, and Rashomon configured. If you do not, read `README.md` first, then come back.
 
@@ -94,7 +94,7 @@ curl -s http://localhost:14881/healthz
 
 You should get a 200 with a small JSON body. If you get `connection refused`, Rashomon failed to start; check `~/.gate/logs/` for stderr from the Python sidecar.
 
-[NEEDS AKRIJ INPUT] for the exact Settings UI path: which panel name, which fields are exposed, whether keys can be tested before save. The current source enforces gate-internal Rashomon authentication via a per-launch secret (`global.RASHOMON_SECRET` in `electron/main.js`), so direct curl calls from outside Gate will be rejected for endpoints that require auth.
+Rashomon configuration lives at Settings > Providers in the Gate UI. Each provider (Anthropic, OpenAI, Ollama) has its own config card with an API key field, a model dropdown, and an enabled toggle. The local Rashomon process runs on port 14881 by default. Verify config by checking the green status dot next to each provider name in the top-bar provider pill. The source enforces gate-internal Rashomon authentication via a per-launch secret (`global.RASHOMON_SECRET` in `electron/main.js`), so direct curl calls from outside Gate are rejected for endpoints that require auth.
 
 ### Setting your first project
 
@@ -145,9 +145,9 @@ A useful test before clicking dispatch: can a human read your objective and tell
 
 ### Power Mode vs Simple Mode
 
-[NEEDS AKRIJ INPUT for the exact UI surface and which mode is the default]. Gate exposes two ticket dispatch modes. Power Mode lets you specify the desk path, the assigned robot, and override defaults; Simple Mode dispatches with sensible defaults derived from Kitty's classification.
+The mode toggle sits in the bottom-right corner of the dispatch bar. Power Mode (the default) exposes the full ticket spec: objective, project, robot assignment override, desk path override, and cost cap. Simple Mode shows only the objective field and dispatches with defaults.
 
-Recommendation: use Simple Mode by default. Use Power Mode when you have a specific reason: forcing a particular robot for continuity, skipping the Strategist desk for a trivial fix, or routing to a particular provider for cost reasons.
+Recommendation: use Simple Mode when the work is routine and Kitty's classification will pick the right desks. Use Power Mode when you have a specific reason: forcing a particular robot for continuity, skipping the Strategist desk for a trivial fix, or routing to a particular provider for cost reasons.
 
 ### Choosing the right desk path
 
@@ -415,9 +415,9 @@ If you delete cards aggressively, you destroy weeks of accumulated value for sho
 
 ### The skill tree visualization
 
-[NEEDS AKRIJ INPUT for the exact UI surface and interaction model of the skill tree visualization]. The class definitions specify a `treeShape` (`standard`, `flat`, `chain`, `bounded`, `lattice`) and an `unlocks` array with thresholds. When a robot's skill count in a tree category crosses an unlock threshold, the unlock activates. Unlock effects include `injection_boost` (extra skills injected), `proactive_recall`, `cross_reference`, `full_inject`, `skip_strategist`, `skip_revision`, `auto_prescan`, and `threat_model`.
+The skill tree is live in Gate at v1.0. Open it from the Robots panel: select a robot, click the Tree tab. Each accumulated skill renders as a node, grouped by domain. Confidence shows as node opacity. Click a node to see the source ticket, robot owner, and deployment count. The tree is a passive visualization at v1.0; interactive editing is planned for v1.1.
 
-To see your robot's current unlocks: Settings > Robots > [robot] > Skill Tree. The tree shows each domain category, the number of skills in it, and which unlocks are active.
+Under the hood, class definitions specify a `treeShape` (`standard`, `flat`, `chain`, `bounded`, `lattice`) and an `unlocks` array with thresholds. When a robot's skill count in a tree category crosses an unlock threshold, the unlock activates. Unlock effects include `injection_boost` (extra skills injected), `proactive_recall`, `cross_reference`, `full_inject`, `skip_strategist`, `skip_revision`, `auto_prescan`, and `threat_model`. The tree visualization shows each category, the skill count in it, and which unlocks are active.
 
 ---
 
@@ -449,9 +449,9 @@ A better default: let each project build its own arsenal. If you find yourself m
 
 ### Project archive vs delete
 
-[NEEDS AKRIJ INPUT for the exact project archive vs delete UI flow at v1.0]. The expected pattern: archive moves the project to inactive without destroying skill data; delete drops the project from Gate's UI but does not erase the skill rows in `grimoire.db` (they remain tagged with the deleted project's name and become inert without an active project to scope them to).
+Settings > Projects > [project] > Archive moves the project to a hidden state, preserving all tickets, robots, and grimoire data. Archived projects are restorable. Settings > Projects > [project] > Delete permanently removes everything, including spell cards. Use Archive 99% of the time.
 
-To fully purge a project's skills, run:
+If you want to purge a deleted project's skills outside the UI (or recover from an accidental archive that left orphaned cards), the SQL escape hatch is:
 
 ```sql
 DELETE FROM spell_cards WHERE project_name = '<project_name>';
@@ -486,7 +486,7 @@ To send a robot to cryo: Settings > Robots > [robot] > Cryo. The file move happe
 
 Move the JSON file back from `~/.gate/cryo/<id>.json` to `~/.gate/robots/<id>.json`. Restart Gate. The robot reappears with all skills intact (the cards in `grimoire.db` are flagged `status=2` while the robot is in cryo, but `status=2` is preserved per row, not destroyed; restoration involves un-flagging).
 
-[NEEDS AKRIJ INPUT for the exact UI flow on restoration, since the FAQ says "move the cryo file back" but the production-grade restoration may also require a Settings > Robots > Restore action].
+Restore a robot from cryo via Settings > Robots > Cryo > [robot] > Restore. The robot returns to the active roster with all skills and history intact. The action moves the JSON file from `~/.gate/cryo/<id>.json` back to `~/.gate/robots/<id>.json` automatically.
 
 ### Permanent deletion
 
@@ -501,7 +501,9 @@ There is no UI button for permanent deletion. The two-step manual path is intent
 
 Robots accumulate XP from completed tickets. The XP level is tracked in the robot JSON and surfaces in the per-event telemetry payload as `robot_xp_level` (`electron/main.js:2075`). Skill count surfaces as `robot_skill_count`.
 
-[NEEDS AKRIJ INPUT for the exact unlock thresholds and level-by-level changes]. Class-specific unlocks fire at specific skill counts within a category (e.g., Librarian's Proactive Recall unlocks at 10 skills in `codebase_patterns`); see `electron/class_definitions.js` for the full unlock table. Level itself contributes to routing weight: higher-level robots are more likely to be selected for similar past work, even if any robot can take any ticket.
+Robots earn XP per completed ticket. Crossing level thresholds unlocks cosmetic auras and titles, not new skill behaviors. The cosmetic system includes auras (fire, ice, storm, void, glitch), nameplate styling, and headwear (kitty ears, void crown, skull face). Cosmetics are persistent and visible in the workspace. The character system is gamification on top of the work, not a gate on capability: a level 1 robot dispatches identically to a level 30 robot in terms of work output.
+
+Class-specific skill unlocks are separate from level cosmetics. They fire at specific skill counts within a category (for example, Librarian's Proactive Recall unlocks at 10 skills in `codebase_patterns`). The full unlock table and the level-to-cosmetic mapping live in `electron/class_definitions.js`; that file is the canonical reference.
 
 ### Robot biography
 
@@ -525,13 +527,19 @@ After a few weeks, this collected state is what makes a robot effective. Restori
 
 Each ticket records its cost in USD at the per-event level (`signal.cost_usd` at `electron/main.js:2071`). The ticket card surfaces this number. The dashboard's Token spend panel aggregates across installs.
 
-To audit your own spend: query `~/.gate/grimoire.db` or whichever local store holds the ticket history. [NEEDS AKRIJ INPUT for the exact local table name where ticket cost is persisted on the desktop side]. The per-ticket cost is also visible in the receipt attached to each completed ticket in the UI.
+To audit your own spend: per-ticket cost is persisted to `~/.gate/gate-memory.db`, table `tickets`, column `total_cost_usd`, computed from Rashomon's per-call accounting and written at ticket completion. Aggregate over a window with:
+
+```sql
+SELECT SUM(total_cost_usd) FROM tickets WHERE created_at >= '2026-04-01';
+```
+
+The per-ticket cost is also visible in the receipt attached to each completed ticket in the UI.
 
 ### Setting per-ticket cost caps
 
-[NEEDS AKRIJ INPUT for whether a per-ticket cost cap is exposed in v1.0 settings]. The infrastructure to track cost per ticket exists; whether the UI lets you set "abort if cost exceeds $X" is unclear from the source alone.
+Hard caps are not exposed in v1.0. The soft signal is the running cost shown on each ticket card during execution. To enforce a cap, you currently kill the ticket manually via Settings > Tickets > [ticket] > Cancel. Hard caps are planned for v1.1.
 
-In the meantime, if a ticket runs unexpectedly long, the cost you see climbing in the receipt is real-time. You can manually abort a runaway ticket from the UI.
+In the meantime, if a ticket runs unexpectedly long, the cost you see climbing in the receipt is real-time. Abort a runaway ticket from the UI before it finishes.
 
 ### Switching providers mid-project to manage spend
 
@@ -763,12 +771,13 @@ To check local buffering: `sqlite3 ~/.gate/grimoire.db "SELECT COUNT(*) FROM tel
 
 ```
 ~/.gate/logs/
-  main.log         Main process stderr/stdout
-  rashomon.log     Rashomon Python sidecar logs
-  dispatch.log     Per-dispatch trace, when GATE_CLOUD_DEBUG=1
+  main.log         Electron main process stderr/stdout
+  renderer.log     UI process logs
+  rashomon.log     Rashomon LLM gateway logs
+  crash/           Crash reports if any
 ```
 
-[NEEDS AKRIJ INPUT for the exact filenames at v1.0; the logs directory exists but the file naming convention is not fully visible from the source]. When debugging, set `GATE_CLOUD_DEBUG=1` in the env before launching Gate to enable verbose cloud-control logging.
+Logs rotate daily. When debugging, set `GATE_CLOUD_DEBUG=1` in the env before launching Gate to enable verbose cloud-control logging.
 
 ### When to file a bug report
 
@@ -803,17 +812,15 @@ To experiment with personality: change the robot's class in Settings > Robots > 
 
 ### Custom desk routing
 
-[NEEDS AKRIJ INPUT for whether v1.0 exposes user-defined desk routes beyond the built-in classifier-driven defaults]. The architecture supports per-ticket desk-path overrides via Power Mode; whether you can save a custom default routing rule is unclear from the source alone.
+Not at v1.0. Desk routing is determined by Kitty's classification at intake. Kitty assigns a default desk path (full pipeline, engineer-only, auditor-only, and so on) based on the objective. Per-ticket overrides are available via Power Mode, but user-defined default routing rules are not. They are planned but not scoped.
 
 ### Hotkeys
 
-[NEEDS AKRIJ INPUT for the full hotkey reference]. The source does not register global keyboard shortcuts via Electron's `globalShortcut` API at v1.0. In-window keyboard shortcuts are likely handled by the renderer; the canonical reference would be in the UI source which is in a separate package.
-
-A safe assumption until the hotkey table is documented: rely on the UI buttons. There are no global hotkeys to learn.
+Gate is mouse-driven at v1.0. No keyboard shortcuts are registered. Hotkey support is tracked for v1.1 and prioritized by user request.
 
 ### UI preferences
 
-[NEEDS AKRIJ INPUT for which UI preferences are tunable at v1.0]. The Settings panel exposes provider configuration, robot management, and project management. Visual preferences (theme, density, animation speed) are not a documented surface today.
+v1.0 exposes: theme (auto / dark / light), font size (small / medium / large), and notification sounds (on / off). Robot dialogue tone, animation speed, and 3D detail level are not yet exposed; they are tracked for v1.1.
 
 ---
 
@@ -997,7 +1004,10 @@ Pulse (the daily snapshot) is gated on the same consent function and similarly s
   projects/                One directory per registered project
     <project-name>/        Project-specific state (config, snapshots, etc.)
   logs/                    Process logs
-    main.log               Main Electron process stderr/stdout (filename approximate; see [NEEDS AKRIJ INPUT] in section 13)
+    main.log               Electron main process stderr/stdout
+    renderer.log           UI process logs
+    rashomon.log           Rashomon LLM gateway logs
+    crash/                 Crash reports directory (created on demand)
     rashomon.log           Rashomon Python sidecar logs
     dispatch.log           Per-dispatch trace (when GATE_CLOUD_DEBUG=1)
   telemetry/               Local-side staging (if present)
@@ -1028,7 +1038,7 @@ From `electron/memory.js:40-200`:
 ### Logs and crash reports
 
 - Process stdout/stderr lands in `~/.gate/logs/main.log` (or system journal on `journalctl --user-unit gate.service` if installed as a systemd unit; not the default at v1.0).
-- Crash reports: Electron's default crash dumper writes to `~/.config/Gate/Crashes/` on Linux when crashpad is enabled. [NEEDS AKRIJ INPUT for whether crashpad is enabled in v1.0 builds].
+- Crash collection is disabled in v1.0 builds. Crashes log to `~/.gate/logs/main.log` locally but are not uploaded to SolidDark. Server-side crash collection is planned for v1.1, opt-in only. Verified by the absence of crashpad, sentry, or upload-URL configuration in `src-tauri/tauri.conf.json` and `package.json`.
 - Telemetry batch failures (server-side) are visible on the SolidDark admin dashboard's Telemetry batch failures panel, not on the local install.
 
 ### Temp files
