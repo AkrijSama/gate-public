@@ -21,7 +21,8 @@ macOS and Windows builds coming soon.
 
 ## Documentation
 
-Read the [FAQ](./FAQ.md) for product, pricing, privacy, install, and roadmap answers.
+- [FAQ](./FAQ.md) for product, pricing, privacy, install, and roadmap answers.
+- [Manual](./MANUAL.md) for the operator's guide: writing tickets, the 4-desk pipeline, the 8 robot classes, the skill database, troubleshooting, and the file-system reference.
 
 ## Support
 
