@@ -961,7 +961,7 @@ Pulse (the daily snapshot) is gated on the same consent function and similarly s
 - Anonymized signals only flow to SolidDark, only when consent is effective, only at the granularity documented above.
 - The collected signals are operational (cost, duration, outcome, failure mode) and aggregate (no per-ticket bodies).
 - The SolidDark Terms of Service prohibit selling user data or training on user outputs.
-- Deletion on request: email akrij@soliddark.net with your install ID; rows tagged with that install ID are dropped.
+- Deletion on request: email support@soliddark.net with your install ID; rows tagged with that install ID are dropped.
 
 ---
 
@@ -1047,4 +1047,4 @@ Gate uses the OS temp directory for short-lived dispatch artifacts (intermediate
 
 ---
 
-Questions not covered here? See [FAQ.md](./FAQ.md) or contact akrij@soliddark.net.
+Questions not covered here? See [FAQ.md](./FAQ.md) or contact support@soliddark.net.

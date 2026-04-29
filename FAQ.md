@@ -4,7 +4,7 @@ Last updated: 2026-04-29 (revision 2)
 
 This is the canonical FAQ for Gate. The version-controlled file lives in this public repository so changes are transparent and dated.
 
-If a question is missing, open an issue on this repo or email akrij@soliddark.net.
+If a question is missing, open an issue on this repo or email support@soliddark.net.
 
 ## Contents
 
@@ -78,7 +78,7 @@ Yes. One click in the Lemon Squeezy customer portal. No email required, no reten
 
 ### Do you offer refunds?
 
-Lemon Squeezy's default policy applies. Email akrij@soliddark.net within 7 days of the most recent charge for a refund, no questions asked.
+Lemon Squeezy's default policy applies. Email support@soliddark.net within 7 days of the most recent charge for a refund, no questions asked.
 
 ### What payment methods are accepted?
 
@@ -86,7 +86,7 @@ Whatever Lemon Squeezy accepts on the soliddark store: credit and debit cards gl
 
 ### Are there team or enterprise plans?
 
-Not at v1.0. Single-seat licenses only today. Team plans are planned but not scoped. If you need multi-seat licensing now, email akrij@soliddark.net and we'll work something out.
+Not at v1.0. Single-seat licenses only today. Team plans are planned but not scoped. If you need multi-seat licensing now, email support@soliddark.net and we'll work something out.
 
 ### Will the price ever increase?
 
@@ -94,7 +94,7 @@ The plan is to move to $79 per month for individual users and $159 per month for
 
 ### Do you offer discounts for students or open-source maintainers?
 
-Not at v1.0. Open to it post-launch once base pricing stabilizes. Email akrij@soliddark.net if you're a student or maintain a meaningful open-source project and want to discuss.
+Not at v1.0. Open to it post-launch once base pricing stabilizes. Email support@soliddark.net if you're a student or maintain a meaningful open-source project and want to discuss.
 
 ---
 
@@ -126,7 +126,7 @@ In transit: every connection between Gate and SolidDark is HTTPS over TLS. Licen
 
 ### What happens to my data if I cancel?
 
-Your local install is unaffected by cancellation; Gate stops dispatching tickets but the data on your disk stays. The anonymized telemetry rows tied to your install ID remain in SolidDark's database for product analysis. To request deletion of those rows, email akrij@soliddark.net with your install ID.
+Your local install is unaffected by cancellation; Gate stops dispatching tickets but the data on your disk stays. The anonymized telemetry rows tied to your install ID remain in SolidDark's database for product analysis. To request deletion of those rows, email support@soliddark.net with your install ID.
 
 ### What happens to my data if SolidDark shuts down?
 
@@ -189,7 +189,7 @@ Yes. The AppImage runs as a regular user. No sudo required at any step.
 
 ### How do I uninstall Gate?
 
-Delete the AppImage. Delete `~/.gate/`. That is the full uninstall. To also revoke the hardware fingerprint binding on the trial or paid license, email akrij@soliddark.net.
+Delete the AppImage. Delete `~/.gate/`. That is the full uninstall. To also revoke the hardware fingerprint binding on the trial or paid license, email support@soliddark.net.
 
 ### How do I update Gate?
 
@@ -399,7 +399,7 @@ The trust trade-off is real. You are buying a $50/month tool from a one-person o
 
 ### How can I reach the founder?
 
-Email akrij@soliddark.net. GitHub issues on this repo are also read directly.
+Email support@soliddark.net. GitHub issues on this repo are also read directly.
 
 ---
 
@@ -419,7 +419,7 @@ Activation rate, conversion funnel, and direct user feedback drive prioritizatio
 
 ### Can I request a feature?
 
-Yes. Open an issue on this repo with the `enhancement` label or email akrij@soliddark.net. Expect a direct response, not a marketing reply.
+Yes. Open an issue on this repo with the `enhancement` label or email support@soliddark.net. Expect a direct response, not a marketing reply.
 
 ### Can I report a bug?
 
@@ -439,7 +439,7 @@ In order of preference:
 
 1. Check this FAQ for the failure mode.
 2. Open an issue on this repo with logs from `~/.gate/logs/`.
-3. Email akrij@soliddark.net for paid-license issues that need direct response.
+3. Email support@soliddark.net for paid-license issues that need direct response.
 
 ### Is there a Discord or community?
 
@@ -447,7 +447,7 @@ Not yet. The public surfaces today are this repo (github.com/AkrijSama/gate-publ
 
 ### How fast do you respond to support requests?
 
-Best-effort, solo founder. Typical response within 24 hours. No formal SLA at v1.0. Email akrij@soliddark.net or open an issue at github.com/AkrijSama/gate-public/issues. Bugs that block paying customers are prioritized.
+Best-effort, solo founder. Typical response within 24 hours. No formal SLA at v1.0. Email support@soliddark.net or open an issue at github.com/AkrijSama/gate-public/issues. Bugs that block paying customers are prioritized.
 
 ### What hours is support available?
 
@@ -459,4 +459,4 @@ The CHANGELOG in this repo, the README in this repo, and the source-code comment
 
 ---
 
-For purchase, soliddark.net/gate. For source under PolyForm Strict, this repository. For direct contact, akrij@soliddark.net.
+For purchase, soliddark.net/gate. For source under PolyForm Strict, this repository. For direct contact, support@soliddark.net.
