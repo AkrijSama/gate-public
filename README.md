@@ -19,6 +19,10 @@ macOS and Windows builds coming soon.
 3. Paste your license key into the field.
 4. Click ACTIVATE.
 
+## Documentation
+
+Read the [FAQ](./FAQ.md) for product, pricing, privacy, install, and roadmap answers.
+
 ## Support
 
 Questions, bugs, feature requests: open an issue or email akrij@soliddark.net
