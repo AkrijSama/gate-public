@@ -23,6 +23,7 @@ macOS and Windows builds coming soon.
 
 - [FAQ](./FAQ.md) for product, pricing, privacy, install, and roadmap answers.
 - [Manual](./MANUAL.md) for the operator's guide: writing tickets, the 4-desk pipeline, the 8 robot classes, the skill database, troubleshooting, and the file-system reference.
+- [Terms of Service](./TOS.md) mirrored for repository transparency. The canonical version at [soliddark.net/tos](https://soliddark.net/tos) controls in case of conflict.
 
 ## Support
 
