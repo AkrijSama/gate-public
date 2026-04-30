@@ -4,7 +4,7 @@ The agentic desktop OS.
 
 AI robots execute developer work autonomously across specialized desks. Local-first, model-agnostic, BYO API keys.
 
-> **Free 3-day trial, no card required.** Get a key at https://soliddark.net/gate
+> **Free 3-day trial, no card required.** Download Gate and launch it.
 
 ## Install
 
@@ -18,15 +18,15 @@ macOS and Windows builds coming soon. Email support@soliddark.net to be notified
 
 ## Try Gate free for 3 days
 
-No card required. Get a trial license at https://soliddark.net/gate.
+No card required. Gate starts the trial automatically on first launch.
 
-1. Click "TRY FREE FOR 3 DAYS, NO CARD" on the landing page.
-2. Receive your trial license key by email.
-3. Launch Gate. The License Required panel appears.
-4. Paste your trial license key into the field.
-5. Click ACTIVATE.
+1. Launch Gate.
+2. Gate generates a stable hashed hardware fingerprint and calls the SolidDark control plane.
+3. The control plane grants or reuses a 3-day trial for that fingerprint automatically.
+4. No email is collected for the trial. No trial license key is emailed.
+5. If this machine already used its trial, Gate requires a paid Lemon Squeezy license before dispatching tickets or sandbox runs.
 
-The trial is hardware-bound and lasts 3 days. After the trial, continue at $50/month with the same license flow. Cancel anytime.
+The trial is hardware-bound and lasts 3 days. After the trial, activate Gate with a paid Lemon Squeezy license to continue dispatching tickets and sandbox runs. Cancel anytime.
 
 ## Documentation
 
