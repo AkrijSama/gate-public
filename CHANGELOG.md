@@ -1,25 +1,39 @@
 # Changelog
 
-## v1.0.0 — 2026-04-27
+All notable changes to Gate are documented here.
 
-First public ship. Built solo.
+This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-- Six robots, four-desk pipeline (Kitty, Strategist, Engineer, Auditor)
-- Model-agnostic via Rashomon LLM gateway
-- Grimoire skill extraction included
-- Linux x64 build
+## [Unreleased]
 
-### Asset naming convention
+## [1.0.1] - 2026-04-30
 
-Every release uploads two AppImage assets:
+### Added
 
-1. `Gate_X.Y.Z_amd64.AppImage` (versioned). Signed; referenced
-   by the per-version URL in `scripts/updater/latest.json`.
-2. `Gate-linux-x86_64.AppImage` (version-stripped permalink).
-   Byte-identical to the versioned asset. Stable URL at
-   `https://github.com/AkrijSama/gate-public/releases/latest/download/Gate-linux-x86_64.AppImage`.
+- Boot heartbeat instrumentation. Gate now reports launch state to SolidDark so the activation funnel is observable. Anonymized aggregates only; no code or content data sent.
 
-The soliddark.net hero CTA points at the permalink URL, so the
-homepage never needs editing per release. The Tauri auto-updater
-continues to use the versioned URL because the manifest pins
-the exact signed asset.
+### Privacy
+
+- See https://soliddark.net/tos for the full telemetry policy.
+
+## [1.0.0] - 2026-04-27
+
+### Added
+
+- Initial public release of Gate, the agentic desktop OS for developers.
+- Four-desk pipeline: Kitty intake, Strategist plan, Engineer build, Auditor verify.
+- Up to eight robots per workspace with persistent skill databases.
+- Robot classes: Natural, Librarian, Surgeon, Paranoid, Investigator, Contractor, Sprinter, Architect.
+- Local LLM gateway (Rashomon) on port 14881 supporting Anthropic, OpenAI, Codex CLI, and local Ollama.
+- BYO API key model.
+- Three-day free trial with hardware-bound license.
+- Linux x86_64 AppImage and .deb builds.
+- SHA256 verification on all release assets.
+
+### Security
+
+- All telemetry payloads exclude code content. Only metadata (ticket cost, outcome, robot class) is collected.
+
+[Unreleased]: https://github.com/AkrijSama/gate-public/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/AkrijSama/gate-public/releases/tag/v1.0.1
+[1.0.0]: https://github.com/AkrijSama/gate-public/releases/tag/v1.0.0
