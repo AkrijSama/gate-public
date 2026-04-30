@@ -1,11 +1,11 @@
 {
-  "version": "1.0.0",
-  "notes": "First public ship.",
-  "pub_date": "2026-04-27T07:30:00Z",
+  "version": "1.0.1",
+  "notes": "Gate v1.0.1: boot heartbeat instrumentation. Anonymized aggregates only; no code or content data sent. Privacy: https://soliddark.net/tos",
+  "pub_date": "2026-04-30T05:19:57Z",
   "platforms": {
     "linux-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRc1JCZ21xclNvQVNOY3JoVkFlZXFaN1VuQ0tvc1ZBWlk4Tkk3aVJFRXZaQms0cEZveHJsU3p4b20wSWJqbHVSaUJUTWswcFJ3SG5FdDJURHVQYk5IWTkrb3RxZG5LcWdnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc3MjgwNjgxCWZpbGU6R2F0ZV8xLjAuMF9hbWQ2NC5BcHBJbWFnZQpSZFErUkNQRkpQa01yUzhrbVIxRW5sa1VVWXBka0ZQeVpjTDJuRlBOM3grRDRLWlJaWXRDTWdhRW5TUzkrQTFPYjZTNVBDOS9lZ0ZNTUFkMUd1RE1BQT09Cg==",
-      "url": "https://github.com/AkrijSama/gate-public/releases/download/v1.0.0/Gate_1.0.0_amd64.AppImage"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRc1JCZ21xclNvQVl0Rk1uMGRrR2VNT1dEbzhnbmJtMVVHYUdGdjNtUVlKV3RlQ0V5ckxjeklJbFduZTBXeCtLVGVwZ1Nkc1I3WSs2c216cUxidVBjaS9mUGdRUkNGV3dJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc3NTI1NzkxCWZpbGU6R2F0ZV8xLjAuMV9hbWQ2NC5BcHBJbWFnZQpHM05ENXNhVDNvL1BmN2MxMEFOdnhNQ2o2ODlTTlpBT3lDbDBvcW5lZUF4bWhGakdYaUUzTy84eXVJTitqSkxmK1VuTUFyNVUzSGRCSHB3emJqUG9DQT09Cg==",
+      "url": "https://github.com/AkrijSama/gate-public/releases/download/v1.0.1/Gate_1.0.1_amd64.AppImage"
     }
   }
 }
