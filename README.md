@@ -4,20 +4,29 @@ The agentic desktop OS.
 
 AI robots execute developer work autonomously across specialized desks. Local-first, model-agnostic, BYO API keys.
 
+> **Free 3-day trial, no card required.** Get a key at https://soliddark.net/gate
+
 ## Install
 
-Linux x64 (Ubuntu 22.04+ recommended):
+Download the latest release: https://github.com/AkrijSama/gate-public/releases/latest
+
+Linux x86_64 (Ubuntu 22.04+ recommended):
 chmod +x Gate_1.0.0_amd64.AppImage
 ./Gate_1.0.0_amd64.AppImage
 
-macOS and Windows builds coming soon.
+macOS and Windows builds coming soon. Email support@soliddark.net to be notified.
 
-## Activate
+## Try Gate free for 3 days
 
-1. Purchase a license at [soliddark.net/gate](https://soliddark.net/gate)
-2. Launch Gate. The License Required panel appears.
-3. Paste your license key into the field.
-4. Click ACTIVATE.
+No card required. Get a trial license at https://soliddark.net/gate.
+
+1. Click "TRY FREE FOR 3 DAYS, NO CARD" on the landing page.
+2. Receive your trial license key by email.
+3. Launch Gate. The License Required panel appears.
+4. Paste your trial license key into the field.
+5. Click ACTIVATE.
+
+The trial is hardware-bound and lasts 3 days. After the trial, continue at $50/month with the same license flow. Cancel anytime.
 
 ## Documentation
 
